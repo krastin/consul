@@ -1633,10 +1633,11 @@ func TestLoad_IntegrationWithFlags(t *testing.T) {
 		expectedWarnings: []string{`The 'acl_datacenter' field is deprecated. Use the 'primary_datacenter' field instead.`},
 	})
 	run(t, testCase{
-		desc: "acl_replication_token enables acl replication",
-		args: []string{`-data-dir=` + dataDir},
-		json: []string{`{ "acl_replication_token": "a" }`},
-		hcl:  []string{`acl_replication_token = "a"`},
+		desc:             "acl_replication_token enables acl replication",
+		args:             []string{`-data-dir=` + dataDir},
+		json:             []string{`{ "acl_replication_token": "a" }`},
+		hcl:              []string{`acl_replication_token = "a"`},
+		expectedWarnings: []string{deprecationWarning("acl_replication_token", "acl.tokens.replication")},
 		expected: func(rt *RuntimeConfig) {
 			rt.ACLTokens.ACLReplicationToken = "a"
 			rt.ACLTokenReplication = true
@@ -5926,6 +5927,8 @@ func TestLoad_FullConfig(t *testing.T) {
 		deprecationWarning("acl_agent_master_token", "acl.tokens.agent_master"),
 		deprecationWarning("acl_agent_token", "acl.tokens.agent"),
 		deprecationWarning("acl_token", "acl.tokens.default"),
+		deprecationWarning("acl_master_token", "acl.tokens.master"),
+		deprecationWarning("acl_replication_token", "acl.tokens.replication"),
 		`bootstrap_expect > 0: expecting 53 servers`,
 	}
 	expectedWarns = append(expectedWarns, enterpriseConfigKeyWarnings...)

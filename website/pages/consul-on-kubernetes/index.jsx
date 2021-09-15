@@ -1,7 +1,7 @@
 import Head from 'next/head'
 // import s from './style.module.css'
 
-export default function CommunityPage() {
+export default function ConsulOnKubernetesPage() {
   return (
     <div>
       <Head>
